@@ -1,0 +1,13 @@
+graph A {
+node [shape=circle,style=filled] 1
+node [shape=circle,style=filled] 2
+node [shape=circle,style=filled] 3
+node [shape=circle,style=filled] 4
+
+1 -- 2 [label="g "];
+2 -- 3 [label="b "];
+2 -- 4;
+3 -- 4 [label="i "];
+4 -- 1 [label="r "];
+
+}
