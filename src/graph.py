@@ -5,7 +5,8 @@ import pydot
 class Graph:
     def __init__(self, filepath):
         self.filepath = filepath
-        (g,) = pydot.graph_from_dot_file(path)
+        self.filename = self.filepath.split('.')[0]
+        (g,) = pydot.graph_from_dot_file(self.filepath)
         # Edge object, to get source/destination use get_source()/get_destination()
         # ex. self.edges[0].get_source()
         self.edges = g.get_edges()
@@ -89,13 +90,23 @@ class Graph:
     def add_solve_clause(self):
         return "solve satisfy"
 
+    def save_file(self):
+        with open(self.filename+'.bee', 'w+') as file:
+            file.write(self.create_all_nodes(1, 8))
+            file.write('\n')
+            file.write(self.create_all_edges(1, 8))
+            file.write('\n')
+            file.write(self.magic_constant(1, 100))
+            file.write('\n')
+            file.write(self.int_array_plus_all())
+            file.write('\n')
+            file.write(self.int_array_allDiff())
+            file.write('\n')
+            file.write(self.add_solve_clause())
+            return self.filename
 
-path = "graph.dot"
-graph = Graph(path)
 
-print(graph.create_all_nodes(1, 8))
-print(graph.create_all_edges(1, 8))
-print(graph.magic_constant(1, 100))
-print(graph.int_array_plus_all())
-print(graph.int_array_allDiff())
-print(graph.add_solve_clause())
+if __name__ == '__main__':
+    path = "graph.dot"
+    graph = Graph(path)
+    graph.save_file()
