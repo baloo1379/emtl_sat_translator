@@ -1,4 +1,4 @@
-from src.bee import compile_and_solve
+from src.bee import compile_and_solve, compile_and_save
 from src.graph import Graph
 import click
 

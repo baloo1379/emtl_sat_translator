@@ -6,7 +6,9 @@ class Graph:
     def __init__(self, filepath):
         self.filepath = filepath
         self.filename = self.filepath.split('.')[0]
+
         (g,) = pydot.graph_from_dot_file(self.filepath)
+
         # Edge object, to get source/destination use get_source()/get_destination()
         # ex. self.edges[0].get_source()
         self.edges = g.get_edges()
@@ -31,34 +33,36 @@ class Graph:
         return arr
 
     # Creates predicate new_int for Node
-    def create_node(self, label, min, max):
-        self.nodes_bee.append("v%s" % label)
-        return "new_int(v%s,%s,%s)" % (label, min, max)
+    def create_node(self, vertex, mini, maxi):
+        label = f"v{vertex}"
+        self.nodes_bee.append(label)
+        return f"new_int({label},{mini},{maxi})\n"
 
     # Creates all predicates based on class nodes
-    def create_all_nodes(self, min, max):
+    def create_all_nodes(self, mini, maxi):
         predicates = ""
         for n in self.nodes:
-            predicates += self.create_node(n, min, max) + "\n"
+            predicates += self.create_node(n, mini, maxi)
         return predicates
 
     # Creates predicate new_int for edge connection
-    def create_edge(self, source, destination, min, max):
-        self.edges_bee.append("e%sn%s" % (source, destination))
-        return "new_int(e%sn%s,%s,%s)" % (source, destination, min, max)
+    def create_edge(self, src, dest, mini, maxi):
+        label = f"e{src}n{dest}"
+        self.edges_bee.append(label)
+        return f"new_int({label},{mini},{maxi})\n"
 
     # Creates all predicates for edge connection based on class edges
-    def create_all_edges(self, min, max):
+    def create_all_edges(self, mini, maxi):
         predicates = ""
         for edge in self.edges:
-            source = edge.get_source()
+            src = edge.get_source()
             dest = edge.get_destination()
-            predicates += self.create_edge(source, dest, min, max) + "\n"
+            predicates += self.create_edge(src, dest, mini, maxi)
         return predicates
 
     # Creates predicate new_int for constant k
-    def magic_constant(self, min, max):
-        return "new_int(k,%s,%s)" % (min, max)
+    def magic_constant(self, mini, maxi):
+        return f"new_int(k,{mini},{maxi})\n"
 
     # Creates predicate int_array_plus for node-node connection
     def int_array_plus(self, array):
@@ -67,24 +71,23 @@ class Graph:
     # Returns int_array_plus predicates for all connections
     def int_array_plus_all(self):
         predicates = ""
-        for n in self.nodes:
-            arr = self.get_node_connections(n)
+        self.edges.reverse()
+        for e in self.edges:
+            arr = self.get_node_connections(e)
             predicates += self.int_array_plus(arr) + "\n"
         return predicates
 
     # Returns array of all connections to single node
-    def get_node_connections(self, node):
-        arr = ['v'+node]
-        for edge in self.edges_bee:
-            if edge.find(node) != -1:
-                arr.append(edge)
+    def get_node_connections(self, e):
+        edge_label = f"e{e.get_source()}n{e.get_destination()}"
+        arr = [edge_label, f"v{e.get_source()}", f"v{e.get_destination()}"]
         return arr
 
     # All diff predicate
     def int_array_allDiff(self):
+        self.nodes_bee.reverse()
         total = self.nodes_bee + self.edges_bee
-        return ("int_array_allDiff(%s)"
-                % (total)).replace("'", "")
+        return f"int_array_allDiff({total})".replace("'", "")
 
     # Returns solve clause
     def add_solve_clause(self):
@@ -92,9 +95,9 @@ class Graph:
 
     def save_file(self):
         with open(self.filename+'.bee', 'w+') as file:
-            file.write(self.create_all_nodes(1, 8))
+            file.write(self.create_all_nodes(1, 12))
             file.write('\n')
-            file.write(self.create_all_edges(1, 8))
+            file.write(self.create_all_edges(1, 12))
             file.write('\n')
             file.write(self.magic_constant(1, 100))
             file.write('\n')
@@ -107,6 +110,6 @@ class Graph:
 
 
 if __name__ == '__main__':
-    path = "graph.dot"
+    path = "../test.dot"
     graph = Graph(path)
     graph.save_file()
