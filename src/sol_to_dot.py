@@ -1,6 +1,6 @@
 import re
 import random
-
+import pydot
 
 def int_generator(seed):
     random.seed(seed)
@@ -13,7 +13,7 @@ def split_vertexes(vertexes):
     for data in vertexes:
         data = data.replace('v', '').replace(' ', '')
         separated_vertexes = data.split("=")
-        # print(separated_vertexes)
+        print(separated_vertexes)
         text = 'node [shape=circle,style=filled,color="' + int_generator(separated_vertexes[1]) + '"] ' + \
                separated_vertexes[0]
         content.append(text)
@@ -26,7 +26,6 @@ def split_edges(edges):
     for data in edges:
         data = data.replace(' ', '').replace('e', '').replace('n', ' ').replace('=', ' ')
         separated_edges = data.split(" ")
-        print(separated_edges)
         try:
             text = separated_edges[0] + ' -- ' + separated_edges[1] + ' [label="' + \
                    separated_edges[2] + '",color="' + int_generator(
@@ -35,12 +34,11 @@ def split_edges(edges):
         except:
             print("Out of labels")
 
-    print(content)
     return content
 
 
 def save_to_file(vertexes, edges, graph_name):
-    file_name = "../graph" + graph_name + ".dot"
+    file_name = "graph" + graph_name + ".dot"
     file = open(file_name, "x")
     data = 'graph ' + graph_name + ' {\n'
     for vertex in vertexes:
@@ -52,6 +50,7 @@ def save_to_file(vertexes, edges, graph_name):
 
     file.write(data)
     file.close()
+    return file_name
 
 
 def sol_to_dot(filename, graph_name):
@@ -60,8 +59,14 @@ def sol_to_dot(filename, graph_name):
         print(file_contents)
     vertexes = split_vertexes(re.findall("v[0-9]+\s=\s[0-9]+", file_contents))
     edges = split_edges(re.findall("e[0-9]n[0-9]+\s=\s[0-9]+", file_contents))
-    save_to_file(vertexes, edges, graph_name)
-    return 1
+    file = save_to_file(vertexes, edges, graph_name)
+    return file
+
+
+def create_png_from_dot(filename):
+    (g,) = pydot.graph_from_dot_file(filename)
+    g.write_png('somefile.png')
+
 
 '''if __name__ == '__main__':
     print(sol_to_dot("../test.sol", 'A'))'''
