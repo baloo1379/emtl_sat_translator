@@ -4,7 +4,10 @@ import pydot
 
 def int_generator(seed):
     random.seed(seed)
-    value = '#' + str(hex(random.randint(255, 16777215))).replace('0x', '')
+    number = str(hex(random.randint(255, 16777215))).replace('0x', '')
+    while len(number) < 6:
+        number = '0' + number
+    value = '#' + number
     return value
 
 
