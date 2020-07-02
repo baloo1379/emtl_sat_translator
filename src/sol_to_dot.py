@@ -13,7 +13,7 @@ def split_vertexes(vertexes):
     for data in vertexes:
         data = data.replace('v', '').replace(' ', '')
         separated_vertexes = data.split("=")
-        print(separated_vertexes)
+        # print(separated_vertexes)
         text = 'node [shape=circle,style=filled,color="' + int_generator(separated_vertexes[1]) + '",label='+separated_vertexes[1]+'] ' + \
                separated_vertexes[0]
         content.append(text)
@@ -56,7 +56,7 @@ def save_to_file(vertexes, edges, graph_name):
 def sol_to_dot(filename, graph_name):
     with open(filename) as file:
         file_contents = file.read()
-        print(file_contents)
+        # print(file_contents)
     vertexes = split_vertexes(re.findall("v[0-9]+\s=\s[0-9]+", file_contents))
     edges = split_edges(re.findall("e[0-9]n[0-9]+\s=\s[0-9]+", file_contents))
     file = save_to_file(vertexes, edges, graph_name)

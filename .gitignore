@@ -135,3 +135,5 @@ bee_binaries/
 *.sol
 *.dot
 !test.dot
+!test2.dot
+/*.png
