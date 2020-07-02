@@ -14,7 +14,7 @@ def split_vertexes(vertexes):
         data = data.replace('v', '').replace(' ', '')
         separated_vertexes = data.split("=")
         print(separated_vertexes)
-        text = 'node [shape=circle,style=filled,color="' + int_generator(separated_vertexes[1]) + '"] ' + \
+        text = 'node [shape=circle,style=filled,color="' + int_generator(separated_vertexes[1]) + '",label='+separated_vertexes[1]+'] ' + \
                separated_vertexes[0]
         content.append(text)
     # print(content)
@@ -39,7 +39,7 @@ def split_edges(edges):
 
 def save_to_file(vertexes, edges, graph_name):
     file_name = "graph" + graph_name + ".dot"
-    file = open(file_name, "x")
+    file = open(file_name, "w")
     data = 'graph ' + graph_name + ' {\n'
     for vertex in vertexes:
         data = data + vertex + "\n"
