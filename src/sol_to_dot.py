@@ -41,7 +41,7 @@ def split_edges(edges):
 
 
 def save_to_file(vertexes, edges, graph_name):
-    file_name = "graph" + graph_name + ".dot"
+    file_name = f"{graph_name}_solved.dot"
     file = open(file_name, "w")
     data = 'graph ' + graph_name + ' {\n'
     for vertex in vertexes:
@@ -56,19 +56,19 @@ def save_to_file(vertexes, edges, graph_name):
     return file_name
 
 
-def sol_to_dot(filename, graph_name):
-    with open(filename) as file:
+def sol_to_dot(filename):
+    with open(f"{filename}.sol") as file:
         file_contents = file.read()
         # print(file_contents)
     vertexes = split_vertexes(re.findall("v[0-9]+\s=\s[0-9]+", file_contents))
     edges = split_edges(re.findall("e[0-9]n[0-9]+\s=\s[0-9]+", file_contents))
-    file = save_to_file(vertexes, edges, graph_name)
+    file = save_to_file(vertexes, edges, filename)
     return file
 
 
-def create_png_from_dot(filename):
-    (g,) = pydot.graph_from_dot_file(filename)
-    g.write_png('somefile.png')
+def create_png_from_dot(dot_file, png_file="graph"):
+    (g,) = pydot.graph_from_dot_file(dot_file)
+    g.write_png(f"{png_file}.png")
 
 
 '''if __name__ == '__main__':

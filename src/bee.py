@@ -17,8 +17,7 @@ def compile_and_solve(filename):
     moved_bee_file = f"{bin_dir}/{filename}.bee"
     sol_file = f"{app_dir}/{filename}.sol"
 
-    # later change to shutil.move
-    shutil.copy2(old_bee_file, moved_bee_file)
+    shutil.move(old_bee_file, moved_bee_file)
 
     # change directory to /bee_binaries where compiler is placed
     os.chdir(bin_dir)
