@@ -1,9 +1,6 @@
 import re
 import random
 
-characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 't', 'u', 'v',
-              'w', 'x', 'y', 'z']
-
 
 def int_generator(seed):
     random.seed(seed)
@@ -32,7 +29,7 @@ def split_edges(edges):
         print(separated_edges)
         try:
             text = separated_edges[0] + ' -- ' + separated_edges[1] + ' [label="' + \
-                   characters.pop(random.randint(0, len(characters))) + '",color="' + int_generator(
+                   separated_edges[2] + '",color="' + int_generator(
                 separated_edges[2]) + '"];'
             content.append(text)
         except:
