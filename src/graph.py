@@ -14,6 +14,9 @@ class Graph:
         self.edges = g.get_edges()
         # List of nodes [1,2,3] etc.
         self.nodes = self.get_node_list(g.get_node_list())
+        # Length of V+E
+        self.total = len(self.edges) + len(self.nodes)
+
         # List of 'bee' edges [e1n2, e2n3] etc.
         self.edges_bee = []
         # List of 'bee' nodes [v1, v2, v3] etc.
@@ -95,9 +98,9 @@ class Graph:
 
     def save_file(self):
         with open(self.filename+'.bee', 'w+') as file:
-            file.write(self.create_all_nodes(1, 100))
+            file.write(self.create_all_nodes(1, self.total))
             file.write('\n')
-            file.write(self.create_all_edges(1, 100))
+            file.write(self.create_all_edges(1, self.total))
             file.write('\n')
             file.write(self.magic_constant(1, 100))
             file.write('\n')
