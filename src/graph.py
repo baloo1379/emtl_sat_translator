@@ -95,9 +95,9 @@ class Graph:
 
     def save_file(self):
         with open(self.filename+'.bee', 'w+') as file:
-            file.write(self.create_all_nodes(1, 12))
+            file.write(self.create_all_nodes(1, 100))
             file.write('\n')
-            file.write(self.create_all_edges(1, 12))
+            file.write(self.create_all_edges(1, 100))
             file.write('\n')
             file.write(self.magic_constant(1, 100))
             file.write('\n')
